@@ -3,7 +3,6 @@ package ru.s1uad_dw.OpenFurnUserService.controllers;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.s1uad_dw.OpenFurnUserService.daos.User;
 import ru.s1uad_dw.OpenFurnUserService.dtos.CreateUserDto;
@@ -54,6 +53,6 @@ public class UserController {
     }
     @GetMapping("check_registration")
     public boolean checkRegistration(@RequestParam String login){
-        return userService.checkRegistration(login);
+        return userService.isRegistered(login);
     }
 }

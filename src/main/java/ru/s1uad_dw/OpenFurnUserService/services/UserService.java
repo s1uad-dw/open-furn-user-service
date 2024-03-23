@@ -2,14 +2,14 @@ package ru.s1uad_dw.OpenFurnUserService.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import ru.s1uad_dw.OpenFurnUserService.daos.User;
 import ru.s1uad_dw.OpenFurnUserService.dtos.CreateUserDto;
 import ru.s1uad_dw.OpenFurnUserService.dtos.ViewUserDto;
 import ru.s1uad_dw.OpenFurnUserService.exceptions.ResourceNotFoundException;
+import ru.s1uad_dw.OpenFurnUserService.exceptions.UserAlreadyRegisteredException;
 import ru.s1uad_dw.OpenFurnUserService.mappers.UserMappers;
 import ru.s1uad_dw.OpenFurnUserService.repositories.UserRepository;
+import ru.s1uad_dw.OpenFurnUserService.validators.UserValidator;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +22,9 @@ public class UserService {
     private UserRepository userRepository;
 
     public UUID createUser(CreateUserDto dto) {
+        UserValidator.validateCreateUserDto(dto);
+        if (isRegistered(dto.getEmail(), dto.getUsername(), dto.getPhone()))
+            throw new UserAlreadyRegisteredException("User already registered");
         return userRepository.save(UserMappers.createUserDtoToDao(dto)).getId();
     }
 
@@ -60,7 +63,21 @@ public class UserService {
         return user.getPassword().equals(password);
     }
 
-    public boolean checkRegistration(String login) {
+    public boolean isRegistered(String login) {
         return userRepository.findByEmailOrUsernameOrPhone(login, login, login).isPresent();
+    }
+    public boolean isRegistered(String email, String username, String phone) {
+        Optional<User> dao = userRepository.findByEmailOrUsernameOrPhone(email, username, phone);
+        if (dao.isPresent()){
+            if (email.equals(dao.get().getEmail()))
+                throw new UserAlreadyRegisteredException("User with specified email already registered");
+
+            if (username.equals(dao.get().getUsername()))
+                throw new UserAlreadyRegisteredException("User with specified username already registered");
+
+            if (phone.equals(dao.get().getPhone()))
+                throw new UserAlreadyRegisteredException("User with specified phone already registered");
+        }
+        return false;
     }
 }
