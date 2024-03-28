@@ -20,7 +20,7 @@ public class TokenService {
         try {
             Claims claims = getTokenBody(token);
             Date expiration = claims.getExpiration();
-            if (!expiration.before(new Date())){
+            if (expiration.before(new Date())){
                 throw new TokenExpiredException("Token expired");
             }
         } catch (JwtException | IllegalArgumentException e) {

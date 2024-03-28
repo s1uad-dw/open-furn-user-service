@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.s1uad_dw.OpenFurnUserService.daos.User;
 import ru.s1uad_dw.OpenFurnUserService.dtos.CreateUserDto;
 import ru.s1uad_dw.OpenFurnUserService.dtos.ViewUserDto;
+import ru.s1uad_dw.OpenFurnUserService.exceptions.InvalidDataException;
 import ru.s1uad_dw.OpenFurnUserService.exceptions.ResourceNotFoundException;
 import ru.s1uad_dw.OpenFurnUserService.exceptions.UserAlreadyRegisteredException;
 import ru.s1uad_dw.OpenFurnUserService.mappers.UserMappers;
@@ -42,7 +43,7 @@ public class UserService {
         return UserMappers.DaoToViewUserDto(dao);
     }
 
-    public UUID updateByToken(String token, User fieldsToUpdate) {
+    public String updateByToken(String token, User fieldsToUpdate) {
         tokenService.checkTokenExpiration(token);
 
         UUID id = tokenService.getId(token);
@@ -57,26 +58,27 @@ public class UserService {
         if (fieldsToUpdate.getBalance() != 0) user.setBalance(fieldsToUpdate.getBalance());
         if (fieldsToUpdate.getCardNumber() != null) user.setCardNumber(fieldsToUpdate.getCardNumber());
 
-        return userRepository.save(user).getId();
+        userRepository.save(user);
+        return "Success";
     }
 
-    public void deleteByToken(String token){
+    public String deleteByToken(String token){
         tokenService.checkTokenExpiration(token);
 
         UUID id = tokenService.getId(token);
         userRepository.deleteById(id);
+        return "Success";
     }
 
-    public boolean verifyUser(String login, String password) {
+    public UUID getIdByLoginAndPassword(String login, String password) {
         User user = userRepository.findByEmailOrUsernameOrPhone(login, login, login).orElseThrow(
-                () -> new ResourceNotFoundException("User not found")
+                () -> new ResourceNotFoundException("User with specified login not found")
         );
-        return user.getPassword().equals(password);
+        if(user.getPassword().equals(password)){
+            return user.getId();
+        } throw new InvalidDataException("Invalid password");
     }
 
-    public boolean isRegistered(String login) {
-        return userRepository.findByEmailOrUsernameOrPhone(login, login, login).isPresent();
-    }
     public boolean isRegistered(String email, String username, String phone) {
         Optional<User> dao = userRepository.findByEmailOrUsernameOrPhone(email, username, phone);
         if (dao.isPresent()){

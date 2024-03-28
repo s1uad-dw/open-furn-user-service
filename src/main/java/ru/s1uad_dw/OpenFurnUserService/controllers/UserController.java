@@ -28,26 +28,22 @@ public class UserController {
     }
         //READ
     @GetMapping
-    public ViewUserDto findByToken(@RequestBody String token){
+    public ViewUserDto findByToken(@RequestHeader("Authorization") String token){
         return userService.findByToken(token);
     }
         //UPDATE
     @PatchMapping
-    public UUID updateByToken(@RequestBody String token, @RequestBody User fieldsToUpdate){
+    public String updateByToken(@RequestHeader("Authorization") String token, @RequestBody User fieldsToUpdate){
         return userService.updateByToken(token, fieldsToUpdate);
     }
         //DELETE
     @DeleteMapping
-    public void deleteByToken(@RequestBody String token){
-        userService.deleteByToken(token);
+    public String deleteByToken(@RequestHeader("Authorization") String token){
+        return userService.deleteByToken(token);
     }
 
-    @GetMapping("verify")
-    public boolean verifyUser(@RequestBody VerifyUserDto dto){
-        return userService.verifyUser(dto.getLogin(), dto.getPassword());
-    }
-    @GetMapping("check_registration")
-    public boolean checkRegistration(@RequestParam String login){
-        return userService.isRegistered(login);
+    @PostMapping("login")
+    public UUID getIdByLoginAndPassword(@RequestBody VerifyUserDto dto){
+        return userService.getIdByLoginAndPassword(dto.getLogin(), dto.getPassword());
     }
 }
