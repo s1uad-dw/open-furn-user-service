@@ -20,6 +20,8 @@ import java.util.UUID;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private TokenService tokenService;
 
     public UUID createUser(CreateUserDto dto) {
         UserValidator.validateCreateUserDto(dto);
@@ -32,12 +34,18 @@ public class UserService {
         return userRepository.findAll().stream().map(UserMappers::DaoToViewUserDto).toList();
     }
 
-    public ViewUserDto findById(UUID id) {
+    public ViewUserDto findByToken(String token) {
+        tokenService.checkTokenExpiration(token);
+
+        UUID id = tokenService.getId(token);
         User dao = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return UserMappers.DaoToViewUserDto(dao);
     }
 
-    public UUID update(UUID id, User fieldsToUpdate) {
+    public UUID updateByToken(String token, User fieldsToUpdate) {
+        tokenService.checkTokenExpiration(token);
+
+        UUID id = tokenService.getId(token);
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if (fieldsToUpdate.getUsername() != null) user.setUsername(fieldsToUpdate.getUsername());
@@ -52,7 +60,10 @@ public class UserService {
         return userRepository.save(user).getId();
     }
 
-    public void deleteById(UUID id){
+    public void deleteByToken(String token){
+        tokenService.checkTokenExpiration(token);
+
+        UUID id = tokenService.getId(token);
         userRepository.deleteById(id);
     }
 

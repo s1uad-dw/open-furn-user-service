@@ -10,7 +10,6 @@ import ru.s1uad_dw.OpenFurnUserService.dtos.VerifyUserDto;
 import ru.s1uad_dw.OpenFurnUserService.dtos.ViewUserDto;
 import ru.s1uad_dw.OpenFurnUserService.services.UserService;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -29,25 +28,21 @@ public class UserController {
     }
         //READ
     @GetMapping
-    public List<ViewUserDto> findAll(){
-        return userService.findAll();
-    }
-    @GetMapping("{id}")
-    public ViewUserDto findById(@PathVariable UUID id){
-        return userService.findById(id);
+    public ViewUserDto findByToken(@RequestBody String token){
+        return userService.findByToken(token);
     }
         //UPDATE
-    @PatchMapping("{id}")
-    public UUID update(@PathVariable UUID id, @RequestBody User fieldsToUpdate){
-        return userService.update(id, fieldsToUpdate);
+    @PatchMapping
+    public UUID updateByToken(@RequestBody String token, @RequestBody User fieldsToUpdate){
+        return userService.updateByToken(token, fieldsToUpdate);
     }
         //DELETE
-    @DeleteMapping("{id}")
-    public void deleteById(@PathVariable UUID id){
-        userService.deleteById(id);
+    @DeleteMapping
+    public void deleteByToken(@RequestBody String token){
+        userService.deleteByToken(token);
     }
 
-    @GetMapping("{id}/verify")
+    @GetMapping("verify")
     public boolean verifyUser(@RequestBody VerifyUserDto dto){
         return userService.verifyUser(dto.getLogin(), dto.getPassword());
     }

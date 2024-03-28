@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.s1uad_dw.OpenFurnUserService.dtos.AppError;
 import ru.s1uad_dw.OpenFurnUserService.exceptions.InvalidDataException;
 import ru.s1uad_dw.OpenFurnUserService.exceptions.ResourceNotFoundException;
+import ru.s1uad_dw.OpenFurnUserService.exceptions.TokenExpiredException;
 import ru.s1uad_dw.OpenFurnUserService.exceptions.UserAlreadyRegisteredException;
 
 import java.time.LocalDateTime;
@@ -42,5 +43,15 @@ public class GlobalExceptionHandler {
                 e.getMessage(),
                 request.getRequestURL().toString()
         ), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<AppError> catchTokenExpiredException(TokenExpiredException e, HttpServletRequest request) {
+        return new ResponseEntity<>(new AppError(
+                LocalDateTime.now(),
+                HttpStatus.UNAUTHORIZED.value(),
+                e.getMessage(),
+                request.getRequestURL().toString()
+        ), HttpStatus.UNAUTHORIZED);
     }
 }
