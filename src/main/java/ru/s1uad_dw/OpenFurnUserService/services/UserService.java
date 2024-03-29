@@ -66,13 +66,16 @@ public class UserService {
         tokenService.checkTokenExpiration(token);
 
         UUID id = tokenService.getId(token);
-        userRepository.deleteById(id);
-        return "Success";
+        if(userRepository.findById(id).isPresent()){
+            userRepository.deleteById(id);
+            return "Success";
+        }
+        throw new ResourceNotFoundException("User not found");
     }
 
     public UUID getIdByLoginAndPassword(String login, String password) {
         User user = userRepository.findByEmailOrUsernameOrPhone(login, login, login).orElseThrow(
-                () -> new ResourceNotFoundException("User with specified login not found")
+                () -> new ResourceNotFoundException("User not found")
         );
         if(user.getPassword().equals(password)){
             return user.getId();
