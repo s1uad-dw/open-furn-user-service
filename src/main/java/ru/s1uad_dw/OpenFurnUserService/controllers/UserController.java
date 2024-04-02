@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.s1uad_dw.OpenFurnUserService.daos.User;
+import ru.s1uad_dw.OpenFurnUserService.models.User;
 import ru.s1uad_dw.OpenFurnUserService.dtos.CreateUserDto;
 import ru.s1uad_dw.OpenFurnUserService.dtos.VerifyUserDto;
 import ru.s1uad_dw.OpenFurnUserService.dtos.ViewUserDto;
@@ -17,7 +17,7 @@ import ru.s1uad_dw.OpenFurnUserService.services.UserService;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("api/v1/user_service")
+@RequestMapping("api/v1/user")
 @AllArgsConstructor
 public class UserController {
     @Autowired

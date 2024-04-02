@@ -2,7 +2,7 @@ package ru.s1uad_dw.OpenFurnUserService.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.s1uad_dw.OpenFurnUserService.daos.User;
+import ru.s1uad_dw.OpenFurnUserService.models.User;
 import ru.s1uad_dw.OpenFurnUserService.dtos.CreateUserDto;
 import ru.s1uad_dw.OpenFurnUserService.dtos.ViewUserDto;
 import ru.s1uad_dw.OpenFurnUserService.exceptions.InvalidDataException;

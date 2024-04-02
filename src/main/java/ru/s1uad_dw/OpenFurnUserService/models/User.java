@@ -1,12 +1,9 @@
-package ru.s1uad_dw.OpenFurnUserService.daos;
+package ru.s1uad_dw.OpenFurnUserService.models;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
 
