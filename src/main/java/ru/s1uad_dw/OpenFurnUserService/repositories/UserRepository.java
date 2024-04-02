@@ -1,8 +1,7 @@
 package ru.s1uad_dw.OpenFurnUserService.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.s1uad_dw.OpenFurnUserService.daos.User;
-import ru.s1uad_dw.OpenFurnUserService.dtos.ViewUserDto;
+import ru.s1uad_dw.OpenFurnUserService.models.User;
 
 import java.util.Optional;
 import java.util.UUID;

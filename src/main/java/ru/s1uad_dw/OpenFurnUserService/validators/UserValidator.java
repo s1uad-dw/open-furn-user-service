@@ -1,6 +1,5 @@
 package ru.s1uad_dw.OpenFurnUserService.validators;
 
-import ru.s1uad_dw.OpenFurnUserService.daos.User;
 import ru.s1uad_dw.OpenFurnUserService.dtos.CreateUserDto;
 import ru.s1uad_dw.OpenFurnUserService.exceptions.InvalidDataException;
 

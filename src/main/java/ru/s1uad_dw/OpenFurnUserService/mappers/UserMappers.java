@@ -1,6 +1,6 @@
 package ru.s1uad_dw.OpenFurnUserService.mappers;
 
-import ru.s1uad_dw.OpenFurnUserService.daos.User;
+import ru.s1uad_dw.OpenFurnUserService.models.User;
 import ru.s1uad_dw.OpenFurnUserService.dtos.CreateUserDto;
 import ru.s1uad_dw.OpenFurnUserService.dtos.ViewUserDto;
 
