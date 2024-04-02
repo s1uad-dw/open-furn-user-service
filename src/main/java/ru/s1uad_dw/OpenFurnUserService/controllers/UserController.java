@@ -40,7 +40,7 @@ public class UserController {
     @DeleteMapping
     public String deleteByToken(@RequestHeader("Authorization") String token){
         return userService.deleteByToken(token);
-    }c
+    }
 
     @PostMapping("login")
     public UUID getIdByLoginAndPassword(@RequestBody VerifyUserDto dto){
