@@ -1,4 +1,4 @@
-package ru.s1uad_dw.OpenFurnUserService.Handlers;
+package ru.s1uad_dw.OpenFurnUserService.handlers;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;

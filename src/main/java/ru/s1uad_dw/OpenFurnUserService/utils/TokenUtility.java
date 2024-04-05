@@ -1,6 +1,7 @@
-package ru.s1uad_dw.OpenFurnUserService.services;
+package ru.s1uad_dw.OpenFurnUserService.utils;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -13,7 +14,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
-public class TokenService {
+public class TokenUtility {
     @Value("${secret-key}")
     private String secretKey;
     public void checkTokenExpiration(String token){
@@ -23,7 +24,9 @@ public class TokenService {
             if (expiration.before(new Date())){
                 throw new TokenExpiredException("Token expired");
             }
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (ExpiredJwtException e){
+            throw new TokenExpiredException("Token expired");
+        }  catch (JwtException | IllegalArgumentException e) {
             throw new InvalidDataException("Invalid token");
         }
     }
