@@ -10,6 +10,7 @@ import ru.s1uad_dw.OpenFurnUserService.exceptions.ResourceNotFoundException;
 import ru.s1uad_dw.OpenFurnUserService.exceptions.UserAlreadyRegisteredException;
 import ru.s1uad_dw.OpenFurnUserService.mappers.UserMappers;
 import ru.s1uad_dw.OpenFurnUserService.repositories.UserRepository;
+import ru.s1uad_dw.OpenFurnUserService.utils.TokenUtility;
 import ru.s1uad_dw.OpenFurnUserService.validators.UserValidator;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private TokenService tokenService;
+    private TokenUtility tokenService;
 
     public UUID createUser(CreateUserDto dto) {
         UserValidator.validateCreateUserDto(dto);
